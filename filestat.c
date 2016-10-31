@@ -5,12 +5,16 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 
-int filestat(char path[]){
-  int fd = open(path, O_RDONLY);
-  struct stat *st = malloc(sizeof(struct stat));
-  stat(fd, st);
-  printf("%s",st->st_mode);
+int filestat(char * path){
+  // int fd = open(path, O_RDONLY);
+  struct stat st;
+  stat(path, &st);
+  printf("Filename: '%s':\n", path);
+  printf("Size: %lu bytes\n", st.st_size);
+  printf("Permissions: %o\n", st.st_mode);
+  printf("Accessed: %s", ctime((time_t *)&st.st_atim));
 }
 
 int main(){
